@@ -156,16 +156,16 @@ export default function App() {
         </section>
 
         {/* Slideshow Anomalías TSM Section */}
-        <section id="tsm" className="o-section" style={{ borderTop: '1px solid var(--color-border)', backgroundColor: 'var(--color-surface)' }}>
+        <section id="tsm" className="o-section o-section--bordered-surface">
           <div className="o-container">
             <header className="c-section-header js-reveal" style={{ '--reveal-delay': '0s' } as React.CSSProperties}>
               <span className="c-section-header__subtitle">Monitoreo diario</span>
               <h2 className="c-section-header__title">El Niño Costero<span className="u-text-cyan">(Niño 1+2)</span></h2>
             </header>
 
-            <div className="js-reveal" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4rem', '--reveal-delay': '0.1s' } as React.CSSProperties}>
+            <div className="c-slideshows-container js-reveal" style={{ '--reveal-delay': '0.1s' } as React.CSSProperties}>
               {/* Slideshow Perú */}
-              <div className="c-slideshow-wrapper" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
+              <div className="c-slideshow-wrapper">
                 <div id="slideshow-peru" className="cycle-slideshow">
                   {slideshowImagesPeru.map((slide, index) => {
                     const isActive = index === activeSlide;
@@ -176,17 +176,6 @@ export default function App() {
                         target="_blank" 
                         rel="noopener noreferrer"
                         className={`cycle-slide ${isActive ? 'cycle-slide-active' : ''}`}
-                        style={{
-                          position: isActive ? 'relative' : 'absolute',
-                          top: 0,
-                          left: 0,
-                          zIndex: isActive ? 99 : 80,
-                          visibility: isActive ? 'visible' : 'hidden',
-                          opacity: isActive ? 1 : 0,
-                          display: 'block',
-                          width: '100%',
-                          textAlign: 'center'
-                        }}
                       >
                         <img 
                           src={slide.src} 
@@ -200,10 +189,10 @@ export default function App() {
                 </div>
               </div>
 
-              <h2 className="c-section-header__title" style={{ textAlign: 'left' }}>El Niño en el Pacífico Central<span className="u-text-cyan">(Niño 3.4)</span></h2>
+              <h2 className="c-section-header__title u-text-left">El Niño en el Pacífico Central<span className="u-text-cyan">(Niño 3.4)</span></h2>
 
               {/* Slideshow Hsur */}
-              <div className="c-slideshow-wrapper" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
+              <div className="c-slideshow-wrapper">
                 <div id="slideshow-hsur" className="cycle-slideshow">
                   {slideshowImagesHsur.map((slide, index) => {
                     const isActive = index === activeSlide;
@@ -214,17 +203,6 @@ export default function App() {
                         target="_blank" 
                         rel="noopener noreferrer"
                         className={`cycle-slide ${isActive ? 'cycle-slide-active' : ''}`}
-                        style={{
-                          position: isActive ? 'relative' : 'absolute',
-                          top: 0,
-                          left: 0,
-                          zIndex: isActive ? 99 : 80,
-                          visibility: isActive ? 'visible' : 'hidden',
-                          opacity: isActive ? 1 : 0,
-                          display: 'block',
-                          width: '100%',
-                          textAlign: 'center'
-                        }}
                       >
                         <img 
                           src={slide.src} 
@@ -272,7 +250,7 @@ export default function App() {
         </section>
 
         {/* Video Gallery Section */}
-        <section id="videos" className="o-section" style={{ borderTop: '1px solid var(--color-border)', backgroundColor: 'var(--color-surface)' }}>
+        <section id="videos" className="o-section o-section--bordered-surface">
           <div className="o-container">
             <header className="c-section-header js-reveal" style={{ '--reveal-delay': '0s' } as React.CSSProperties}>
               <span className="c-section-header__subtitle">{config.videos.subtitle}</span>
@@ -290,7 +268,7 @@ export default function App() {
                     <iframe
                       src={`https://www.youtube.com/embed/${getYoutubeId(activeVideo.src)}?autoplay=1`}
                       title={activeVideo.caption}
-                      style={{ width: '100%', height: '100%', border: 'none' }}
+                      className="c-video-iframe"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
                     ></iframe>
@@ -300,19 +278,12 @@ export default function App() {
                       <button className="c-play-btn c-play-btn--large" onClick={() => setIsPlaying(true)}>
                         <span className="c-play-btn__icon">▶</span>
                       </button>
-                      <div className="c-video-main__badge">
-                        <span className="c-video-main__logo">{config.videos.mainVideo.logo}</span>
-                        <span className="c-video-main__title">{activeVideo.caption}</span>
-                      </div>
                       <div className="c-video-main__actions">
-                        <button className="c-icon-btn"><span>➦</span></button>
-                        <button className="c-icon-btn"><span>🕒</span></button>
                         <a 
                           href={activeVideo.src} 
                           target="_blank" 
                           rel="noopener noreferrer" 
                           className="c-youtube-btn"
-                          style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none' }}
                         >
                           Mirar en <span>YouTube</span>
                         </a>
@@ -338,7 +309,6 @@ export default function App() {
                           setActiveVideo(video);
                           setIsPlaying(true);
                         }}
-                        style={{ cursor: 'pointer' }}
                       >
                         <div className="c-video-item__thumb-wrap">
                           <img src={video.image} alt={video.alt} className="c-video__thumb" loading="lazy" />
@@ -363,9 +333,9 @@ export default function App() {
         {/* Prevención Section */}
         <section id="prevencion" className="o-section">
           <div className="o-container">
-            <div className="o-grid o-grid--2" style={{ alignItems: 'center' }}>
+            <div className="o-grid o-grid--2 u-align-center">
               <div>
-                <header className="c-section-header js-reveal" style={{ marginBottom: '2rem', '--reveal-delay': '0s' } as React.CSSProperties}>
+                <header className="c-section-header c-section-header--prevention js-reveal" style={{ '--reveal-delay': '0s' } as React.CSSProperties}>
                   <span className="c-section-header__subtitle">{config.prevencion.subtitle}</span>
                   <h2 className="c-section-header__title">
                     {config.prevencion.title.text}
@@ -373,7 +343,7 @@ export default function App() {
                     <span className="u-text-cyan">{config.prevencion.title.highlight}</span>
                   </h2>
                 </header>
-                <p className="js-reveal" style={{ color: 'var(--color-text-muted)', marginBottom: '3rem', maxWidth: '400px', '--reveal-delay': '0.1s' } as React.CSSProperties}>
+                <p className="c-prevention-desc js-reveal" style={{ '--reveal-delay': '0.1s' } as React.CSSProperties}>
                   {config.prevencion.description}
                 </p>
               </div>

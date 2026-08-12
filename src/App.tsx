@@ -1,0 +1,264 @@
+import React, { useEffect, useRef, useState } from 'react';
+import config from './config.json';
+
+export default function App() {
+  const [activeTab, setActiveTab] = useState(config.monitoreo.tabs[0]);
+  const observerRef = useRef<IntersectionObserver | null>(null);
+
+  useEffect(() => {
+    // Intersection Observer for scroll reveal animations
+    observerRef.current = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+    const revealElements = document.querySelectorAll('.js-reveal');
+    revealElements.forEach((el) => observerRef.current?.observe(el));
+
+    // Parallax effect for Hero background
+    const handleScroll = () => {
+      const scrolled = window.scrollY;
+      const heroBgWrap = document.querySelector('.c-hero__bg-wrap') as HTMLElement;
+      if (heroBgWrap) {
+        heroBgWrap.style.transform = `translateY(${scrolled * 0.35}px)`;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  return (
+    <>
+      <header className="c-header">
+        <div className="c-logo">
+          {config.header.logo.main} <span>{config.header.logo.highlight}</span>
+        </div>
+        <nav className="c-nav">
+          {config.header.navigation.map((item, idx) => (
+            <a key={idx} href={item.href} className="c-nav__link">
+              {item.label}
+            </a>
+          ))}
+        </nav>
+      </header>
+
+      <main>
+        {/* Hero Section */}
+        <section id="inicio" className="c-hero">
+          <div className="c-hero__bg-wrap">
+            <img 
+              className="c-hero__bg" 
+              src={config.hero.backgroundImage} 
+              alt={config.hero.backgroundAlt} 
+            />
+          </div>
+          <div className="o-container">
+            <div className="c-hero__content">
+              <span className="c-hero__label js-reveal" style={{ '--reveal-delay': '0s' } as React.CSSProperties}>
+                {config.hero.label}
+              </span>
+              <h1 className="c-hero__title js-reveal" style={{ '--reveal-delay': '0.1s' } as React.CSSProperties}>
+                {config.hero.title.split('\n').map((line, idx) => (
+                  <span key={idx}>
+                    {line}
+                    {idx < config.hero.title.split('\n').length - 1 && <br />}
+                  </span>
+                ))}
+              </h1>
+              <p className="c-hero__desc js-reveal" style={{ '--reveal-delay': '0.2s' } as React.CSSProperties}>
+                {config.hero.description}
+              </p>
+              <div className="c-alert js-reveal" style={{ '--reveal-delay': '0.3s' } as React.CSSProperties}>
+                <div className="c-alert__dot"></div>
+                <span className="c-alert__text">{config.hero.alert.text}</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Monitoreo en Vivo Section */}
+        <section id="monitoreo" className="o-section">
+          <div className="o-container">
+            <header className="c-section-header js-reveal" style={{ '--reveal-delay': '0s' } as React.CSSProperties}>
+              <span className="c-section-header__subtitle">{config.monitoreo.subtitle}</span>
+              <h2 className="c-section-header__title">
+                {config.monitoreo.title.text}
+                <span className="u-text-cyan">{config.monitoreo.title.highlight}</span>
+              </h2>
+            </header>
+            
+            <div>
+              <div className="c-tabs js-reveal" style={{ '--reveal-delay': '0.1s' } as React.CSSProperties}>
+                {config.monitoreo.tabs.map(tab => (
+                  <button 
+                    key={tab.id}
+                    className={`c-tabs__btn ${activeTab.id === tab.id ? 'is-active' : ''}`}
+                    onClick={() => setActiveTab(tab)}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+              <div className="c-widget-frame js-reveal" style={{ '--reveal-delay': '0.2s' } as React.CSSProperties}>
+                <iframe src={activeTab.src} title="Mapa Interactivo" loading="lazy"></iframe>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Noticias Grid Section */}
+        <section id="noticias" className="o-section" style={{ backgroundColor: 'var(--color-surface)' }}>
+          <div className="o-container">
+            <header className="c-section-header js-reveal" style={{ '--reveal-delay': '0s' } as React.CSSProperties}>
+              <span className="c-section-header__subtitle">{config.noticias.subtitle}</span>
+              <h2 className="c-section-header__title">
+                {config.noticias.title.text}
+                <span className="u-text-orange">{config.noticias.title.highlight}</span>
+              </h2>
+            </header>
+
+            <div className="o-grid o-grid--3">
+              {config.noticias.news.map((news, index) => (
+                <div key={news.id} className="c-card js-reveal" style={{ '--reveal-delay': `${index * 0.15}s` } as React.CSSProperties}>
+                  <div className="c-card__image-wrap">
+                    <img src={news.image} alt={news.title} className="c-card__image" loading="lazy" />
+                  </div>
+                  <div className="c-card__content">
+                    <h3 className="c-card__title">{news.title}</h3>
+                    <p className="c-card__time">{news.time}</p>
+                    <a href={news.link} className="c-btn-read">
+                      <span className="c-btn-read__text">{config.noticias.readMoreText}</span>
+                      <span className="c-btn-read__icon">→</span>
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Video Gallery Section */}
+        <section id="videos" className="o-section">
+          <div className="o-container">
+            <header className="c-section-header js-reveal" style={{ '--reveal-delay': '0s' } as React.CSSProperties}>
+              <span className="c-section-header__subtitle">{config.videos.subtitle}</span>
+              <h2 className="c-section-header__title">
+                {config.videos.title.text}
+                <span className="u-text-cyan">{config.videos.title.highlight}</span>
+              </h2>
+            </header>
+            
+            <div className="o-grid o-grid--video-layout">
+              {/* Main Video */}
+              <div className="c-video-main js-reveal" style={{ '--reveal-delay': '0.1s' } as React.CSSProperties}>
+                <div className="c-video-main__player">
+                  <img src={config.videos.mainVideo.image} alt={config.videos.mainVideo.alt} className="c-video__thumb" loading="lazy" />
+                  <button className="c-play-btn c-play-btn--large">
+                    <span className="c-play-btn__icon">▶</span>
+                  </button>
+                  <div className="c-video-main__badge">
+                    <span className="c-video-main__logo">{config.videos.mainVideo.logo}</span>
+                    <span className="c-video-main__title">{config.videos.mainVideo.title}</span>
+                  </div>
+                  <div className="c-video-main__actions">
+                    <button className="c-icon-btn"><span>➦</span></button>
+                    <button className="c-icon-btn"><span>🕒</span></button>
+                    <button className="c-youtube-btn">Mirar en <span>YouTube</span></button>
+                  </div>
+                </div>
+                <h3 className="c-video-main__caption">{config.videos.mainVideo.caption}</h3>
+              </div>
+
+              {/* Video Playlist */}
+              <div className="c-video-playlist js-reveal" style={{ '--reveal-delay': '0.2s' } as React.CSSProperties}>
+                <h4 className="c-video-playlist__title">{config.videos.playlistTitle}</h4>
+                
+                <div className="c-video-list">
+                  {config.videos.playlist.map((video) => (
+                    <div key={video.id} className={`c-video-item ${video.isActive ? 'is-active' : ''}`}>
+                      <div className="c-video-item__thumb-wrap">
+                        <img src={video.image} alt={video.alt} className="c-video__thumb" loading="lazy" />
+                        {!video.isActive && (
+                          <button className="c-play-btn c-play-btn--small">
+                            <span className="c-play-btn__icon">▶</span>
+                          </button>
+                        )}
+                      </div>
+                      <div className="c-video-item__content">
+                        <h5 className="c-video-item__caption">{video.caption}</h5>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Prevención Section */}
+        <section id="prevencion" className="o-section">
+          <div className="o-container">
+            <div className="o-grid o-grid--2" style={{ alignItems: 'center' }}>
+              <div>
+                <header className="c-section-header js-reveal" style={{ marginBottom: '2rem', '--reveal-delay': '0s' } as React.CSSProperties}>
+                  <span className="c-section-header__subtitle">{config.prevencion.subtitle}</span>
+                  <h2 className="c-section-header__title">
+                    {config.prevencion.title.text}
+                    <br />
+                    <span className="u-text-cyan">{config.prevencion.title.highlight}</span>
+                  </h2>
+                </header>
+                <p className="js-reveal" style={{ color: 'var(--color-text-muted)', marginBottom: '3rem', maxWidth: '400px', '--reveal-delay': '0.1s' } as React.CSSProperties}>
+                  {config.prevencion.description}
+                </p>
+              </div>
+              
+              <ul className="c-prevention-list">
+                {config.prevencion.steps.map((item, index) => (
+                  <li key={item.id} className="c-prevention-item js-reveal" style={{ '--reveal-delay': `${index * 0.15}s` } as React.CSSProperties}>
+                    <span className="c-prevention-item__num">0{item.id}</span>
+                    <div className="c-prevention-item__content">
+                      <h4>{item.title}</h4>
+                      <p>{item.desc}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="c-cta">
+          <div className="o-container u-text-center">
+            <h2 className="c-cta__title js-reveal" style={{ '--reveal-delay': '0s' } as React.CSSProperties}>
+              {config.cta.title}
+            </h2>
+            <a href={config.cta.buttonLink} className="c-cta__btn js-reveal" style={{ '--reveal-delay': '0.15s' } as React.CSSProperties}>
+              {config.cta.buttonText}
+            </a>
+          </div>
+        </section>
+      </main>
+
+      <footer className="c-footer">
+        <span className="c-footer__campaign js-reveal" style={{ '--reveal-delay': '0s' } as React.CSSProperties}>
+          {config.footer.campaignLabel}
+        </span>
+        <div className="c-footer__logo js-reveal" style={{ '--reveal-delay': '0.15s' } as React.CSSProperties}>
+          {config.footer.logo}
+        </div>
+      </footer>
+    </>
+  );
+}

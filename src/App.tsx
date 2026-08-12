@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import config from './config.json';
 
-const slideshowImages = (() => {
+const generateSlideshowImages = (region: 'peru' | 'hsur') => {
   const list = [];
   const today = new Date();
   for (let i = 13; i >= 1; i--) {
@@ -14,11 +14,14 @@ const slideshowImages = (() => {
     const dateCompact = `${year}${month}${day}`;
     list.push({
       date: dateStr,
-      src: `https://www.senamhi.gob.pe/usr/dms/dato_tsm/ostia/diario/peru/ostia_anom_peru_${dateCompact}.png`
+      src: `https://www.senamhi.gob.pe/usr/dms/dato_tsm/ostia/diario/${region}/ostia_anom_${region}_${dateCompact}.png`
     });
   }
   return list;
-})();
+};
+
+const slideshowImagesPeru = generateSlideshowImages('peru');
+const slideshowImagesHsur = generateSlideshowImages('hsur');
 
 export default function App() {
   const [activeTab, setActiveTab] = useState(config.monitoreo.tabs[0]);
@@ -35,7 +38,7 @@ export default function App() {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setActiveSlide((prev) => (prev + 1) % slideshowImages.length);
+      setActiveSlide((prev) => (prev + 1) % slideshowImagesPeru.length);
     }, 2000);
     return () => clearInterval(timer);
   }, []);
@@ -156,42 +159,84 @@ export default function App() {
           <div className="o-container">
             <header className="c-section-header js-reveal" style={{ '--reveal-delay': '0s' } as React.CSSProperties}>
               <span className="c-section-header__subtitle">Monitoreo diario</span>
-              <h2 className="c-section-header__title">El Niño Costero <span className="u-text-cyan">(Niño 1+2)</span></h2>
+              <h2 className="c-section-header__title">Anomalías de la <span className="u-text-cyan">Temperatura Superficial del Mar</span></h2>
             </header>
 
-            <div className="c-slideshow-container js-reveal" style={{ '--reveal-delay': '0.1s' } as React.CSSProperties}>
-              {/* Slideshow Display */}
-              <div id="slideshow" className="cycle-slideshow">
-                {slideshowImages.map((slide, index) => {
-                  const isActive = index === activeSlide;
-                  return (
-                    <a 
-                      key={index}
-                      href={slide.src} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className={`cycle-slide ${isActive ? 'cycle-slide-active' : ''}`}
-                      style={{
-                        position: isActive ? 'relative' : 'absolute',
-                        top: 0,
-                        left: 0,
-                        zIndex: isActive ? 99 : 80,
-                        visibility: isActive ? 'visible' : 'hidden',
-                        opacity: isActive ? 1 : 0,
-                        display: 'block',
-                        width: '100%',
-                        textAlign: 'center'
-                      }}
-                    >
-                      <img 
-                        src={slide.src} 
-                        title={slide.date} 
-                        alt={`Anomalía TSM ${slide.date}`}
-                        className="img-fluid" 
-                      />
-                    </a>
-                  );
-                })}
+            <div className="o-grid o-grid--2 js-reveal" style={{ '--reveal-delay': '0.1s', gap: '3rem' } as React.CSSProperties}>
+              {/* Slideshow Perú */}
+              <div className="c-slideshow-wrapper" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
+                <h3 style={{ fontSize: '1.25rem', color: 'var(--color-text)', marginBottom: '0.5rem', fontWeight: 600 }}>El Niño Costero (Niño 1+2)</h3>
+                <div id="slideshow-peru" className="cycle-slideshow">
+                  {slideshowImagesPeru.map((slide, index) => {
+                    const isActive = index === activeSlide;
+                    return (
+                      <a 
+                        key={index}
+                        href={slide.src} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className={`cycle-slide ${isActive ? 'cycle-slide-active' : ''}`}
+                        style={{
+                          position: isActive ? 'relative' : 'absolute',
+                          top: 0,
+                          left: 0,
+                          zIndex: isActive ? 99 : 80,
+                          visibility: isActive ? 'visible' : 'hidden',
+                          opacity: isActive ? 1 : 0,
+                          display: 'block',
+                          width: '100%',
+                          textAlign: 'center'
+                        }}
+                      >
+                        <img 
+                          src={slide.src} 
+                          title={slide.date} 
+                          alt={`Anomalía TSM Perú ${slide.date}`}
+                          className="img-fluid" 
+                        />
+                      </a>
+                    );
+                  })}
+                </div>
+                <span style={{ fontSize: '0.9rem', color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)' }}>Fecha: {slideshowImagesPeru[activeSlide]?.date}</span>
+              </div>
+
+              {/* Slideshow Hsur */}
+              <div className="c-slideshow-wrapper" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
+                <h3 style={{ fontSize: '1.25rem', color: 'var(--color-text)', marginBottom: '0.5rem', fontWeight: 600 }}>Pacífico Sur (Hsur)</h3>
+                <div id="slideshow-hsur" className="cycle-slideshow">
+                  {slideshowImagesHsur.map((slide, index) => {
+                    const isActive = index === activeSlide;
+                    return (
+                      <a 
+                        key={index}
+                        href={slide.src} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className={`cycle-slide ${isActive ? 'cycle-slide-active' : ''}`}
+                        style={{
+                          position: isActive ? 'relative' : 'absolute',
+                          top: 0,
+                          left: 0,
+                          zIndex: isActive ? 99 : 80,
+                          visibility: isActive ? 'visible' : 'hidden',
+                          opacity: isActive ? 1 : 0,
+                          display: 'block',
+                          width: '100%',
+                          textAlign: 'center'
+                        }}
+                      >
+                        <img 
+                          src={slide.src} 
+                          title={slide.date} 
+                          alt={`Anomalía TSM Hsur ${slide.date}`}
+                          className="img-fluid" 
+                        />
+                      </a>
+                    );
+                  })}
+                </div>
+                <span style={{ fontSize: '0.9rem', color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)' }}>Fecha: {slideshowImagesHsur[activeSlide]?.date}</span>
               </div>
             </div>
           </div>

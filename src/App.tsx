@@ -1,10 +1,30 @@
 import React, { useEffect, useRef, useState } from 'react';
 import config from './config.json';
 
+const slideshowImages = (() => {
+  const list = [];
+  const today = new Date();
+  for (let i = 13; i >= 1; i--) {
+    const d = new Date();
+    d.setDate(today.getDate() - i);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    const dateStr = `${year}-${month}-${day}`;
+    const dateCompact = `${year}${month}${day}`;
+    list.push({
+      date: dateStr,
+      src: `https://www.senamhi.gob.pe/usr/dms/dato_tsm/ostia/diario/peru/ostia_anom_peru_${dateCompact}.png`
+    });
+  }
+  return list;
+})();
+
 export default function App() {
   const [activeTab, setActiveTab] = useState(config.monitoreo.tabs[0]);
   const [activeVideo, setActiveVideo] = useState(config.videos.playlist[0]);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [activeSlide, setActiveSlide] = useState(0);
   const observerRef = useRef<IntersectionObserver | null>(null);
 
   const getYoutubeId = (url: string) => {
@@ -12,6 +32,13 @@ export default function App() {
     const match = url.match(regExp);
     return (match && match[2].length === 11) ? match[2] : null;
   };
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveSlide((prev) => (prev + 1) % slideshowImages.length);
+    }, 2000);
+    return () => clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     // Intersection Observer for scroll reveal animations
@@ -119,6 +146,68 @@ export default function App() {
               </div>
               <div className="c-widget-frame js-reveal" style={{ '--reveal-delay': '0.2s' } as React.CSSProperties}>
                 <iframe src={activeTab.src} title="Mapa Interactivo" loading="lazy"></iframe>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Slideshow Anomalías TSM Section */}
+        <section id="tsm" className="o-section" style={{ borderTop: '1px solid var(--color-border)', backgroundColor: 'var(--color-surface)' }}>
+          <div className="o-container">
+            <header className="c-section-header js-reveal" style={{ '--reveal-delay': '0s' } as React.CSSProperties}>
+              <span className="c-section-header__subtitle">Anomalía de la Temperatura Superficial del Mar</span>
+              <h2 className="c-section-header__title">Monitoreo de <span className="u-text-cyan">Anomalías TSM</span></h2>
+            </header>
+
+            <div className="c-slideshow-container js-reveal" style={{ '--reveal-delay': '0.1s' } as React.CSSProperties}>
+              {/* Slideshow Display */}
+              <div id="slideshow" className="cycle-slideshow">
+                {slideshowImages.map((slide, index) => {
+                  const isActive = index === activeSlide;
+                  return (
+                    <a 
+                      key={index}
+                      href={slide.src} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className={`cycle-slide ${isActive ? 'cycle-slide-active' : ''}`}
+                      style={{
+                        position: isActive ? 'relative' : 'absolute',
+                        top: 0,
+                        left: 0,
+                        zIndex: isActive ? 99 : 80,
+                        visibility: isActive ? 'visible' : 'hidden',
+                        opacity: isActive ? 1 : 0,
+                        display: 'block',
+                        width: '100%',
+                        textAlign: 'center'
+                      }}
+                    >
+                      <img 
+                        src={slide.src} 
+                        title={slide.date} 
+                        alt={`Anomalía TSM ${slide.date}`}
+                        className="img-fluid" 
+                      />
+                    </a>
+                  );
+                })}
+              </div>
+
+              {/* Navigation/Pager */}
+              <div id="nav" className="c-slideshow-pager">
+                {slideshowImages.map((slide, index) => {
+                  const isActive = index === activeSlide;
+                  return (
+                    <button
+                      key={index}
+                      onClick={() => setActiveSlide(index)}
+                      className={`c-slideshow-pager__btn ${isActive ? 'is-active' : ''}`}
+                    >
+                      {slide.date}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>

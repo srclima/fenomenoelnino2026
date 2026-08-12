@@ -155,8 +155,8 @@ export default function App() {
         <section id="tsm" className="o-section" style={{ borderTop: '1px solid var(--color-border)', backgroundColor: 'var(--color-surface)' }}>
           <div className="o-container">
             <header className="c-section-header js-reveal" style={{ '--reveal-delay': '0s' } as React.CSSProperties}>
-              <span className="c-section-header__subtitle">Anomalía de la Temperatura Superficial del Mar</span>
-              <h2 className="c-section-header__title">Monitoreo de <span className="u-text-cyan">Anomalías TSM</span></h2>
+              <span className="c-section-header__subtitle">Monitoreo diario</span>
+              <h2 className="c-section-header__title">El Niño Costero <span className="u-text-cyan">(Niño 1+2)</span></h2>
             </header>
 
             <div className="c-slideshow-container js-reveal" style={{ '--reveal-delay': '0.1s' } as React.CSSProperties}>
@@ -190,22 +190,6 @@ export default function App() {
                         className="img-fluid" 
                       />
                     </a>
-                  );
-                })}
-              </div>
-
-              {/* Navigation/Pager */}
-              <div id="nav" className="c-slideshow-pager">
-                {slideshowImages.map((slide, index) => {
-                  const isActive = index === activeSlide;
-                  return (
-                    <button
-                      key={index}
-                      onClick={() => setActiveSlide(index)}
-                      className={`c-slideshow-pager__btn ${isActive ? 'is-active' : ''}`}
-                    >
-                      {slide.date}
-                    </button>
                   );
                 })}
               </div>

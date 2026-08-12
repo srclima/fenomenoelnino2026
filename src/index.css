@@ -70,7 +70,7 @@ button {
   padding: 0 5vw;
 }
 .o-section {
-  padding: 15vh 0;
+  padding: 7vh 0;
   position: relative;
 }
 .o-grid {
@@ -801,4 +801,9 @@ button {
   font-weight: bold;
   border-color: var(--color-accent-cyan);
   box-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
+}
+
+#slideshow-hsur {
+  max-width: 800px;
+  aspect-ratio: 2.54;
 }

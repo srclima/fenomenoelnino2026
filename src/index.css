@@ -466,6 +466,9 @@ button {
   background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.8) 100%);
   pointer-events: none;
 }
+.c-video-main__player.is-playing::after {
+  display: none;
+}
 
 .c-video-main__badge {
   position: absolute;

@@ -3,7 +3,15 @@ import config from './config.json';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState(config.monitoreo.tabs[0]);
+  const [activeVideo, setActiveVideo] = useState(config.videos.playlist[0]);
+  const [isPlaying, setIsPlaying] = useState(false);
   const observerRef = useRef<IntersectionObserver | null>(null);
+
+  const getYoutubeId = (url: string) => {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+  };
 
   useEffect(() => {
     // Intersection Observer for scroll reveal animations
@@ -161,22 +169,42 @@ export default function App() {
             <div className="o-grid o-grid--video-layout">
               {/* Main Video */}
               <div className="c-video-main js-reveal" style={{ '--reveal-delay': '0.1s' } as React.CSSProperties}>
-                <div className="c-video-main__player">
-                  <img src={config.videos.mainVideo.image} alt={config.videos.mainVideo.alt} className="c-video__thumb" loading="lazy" />
-                  <button className="c-play-btn c-play-btn--large">
-                    <span className="c-play-btn__icon">▶</span>
-                  </button>
-                  <div className="c-video-main__badge">
-                    <span className="c-video-main__logo">{config.videos.mainVideo.logo}</span>
-                    <span className="c-video-main__title">{config.videos.mainVideo.title}</span>
-                  </div>
-                  <div className="c-video-main__actions">
-                    <button className="c-icon-btn"><span>➦</span></button>
-                    <button className="c-icon-btn"><span>🕒</span></button>
-                    <button className="c-youtube-btn">Mirar en <span>YouTube</span></button>
-                  </div>
+                <div className={`c-video-main__player ${isPlaying ? 'is-playing' : ''}`}>
+                  {isPlaying ? (
+                    <iframe
+                      src={`https://www.youtube.com/embed/${getYoutubeId(activeVideo.src)}?autoplay=1`}
+                      title={activeVideo.caption}
+                      style={{ width: '100%', height: '100%', border: 'none' }}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    ></iframe>
+                  ) : (
+                    <>
+                      <img src={activeVideo.image} alt={activeVideo.alt} className="c-video__thumb" loading="lazy" />
+                      <button className="c-play-btn c-play-btn--large" onClick={() => setIsPlaying(true)}>
+                        <span className="c-play-btn__icon">▶</span>
+                      </button>
+                      <div className="c-video-main__badge">
+                        <span className="c-video-main__logo">{config.videos.mainVideo.logo}</span>
+                        <span className="c-video-main__title">{activeVideo.caption}</span>
+                      </div>
+                      <div className="c-video-main__actions">
+                        <button className="c-icon-btn"><span>➦</span></button>
+                        <button className="c-icon-btn"><span>🕒</span></button>
+                        <a 
+                          href={activeVideo.src} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="c-youtube-btn"
+                          style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none' }}
+                        >
+                          Mirar en <span>YouTube</span>
+                        </a>
+                      </div>
+                    </>
+                  )}
                 </div>
-                <h3 className="c-video-main__caption">{config.videos.mainVideo.caption}</h3>
+                <h3 className="c-video-main__caption">{activeVideo.caption}</h3>
               </div>
 
               {/* Video Playlist */}
@@ -184,21 +212,32 @@ export default function App() {
                 <h4 className="c-video-playlist__title">{config.videos.playlistTitle}</h4>
                 
                 <div className="c-video-list">
-                  {config.videos.playlist.map((video) => (
-                    <div key={video.id} className={`c-video-item ${video.isActive ? 'is-active' : ''}`}>
-                      <div className="c-video-item__thumb-wrap">
-                        <img src={video.image} alt={video.alt} className="c-video__thumb" loading="lazy" />
-                        {!video.isActive && (
-                          <button className="c-play-btn c-play-btn--small">
-                            <span className="c-play-btn__icon">▶</span>
-                          </button>
-                        )}
+                  {config.videos.playlist.map((video) => {
+                    const isSelected = activeVideo.id === video.id;
+                    return (
+                      <div 
+                        key={video.id} 
+                        className={`c-video-item ${isSelected ? 'is-active' : ''}`}
+                        onClick={() => {
+                          setActiveVideo(video);
+                          setIsPlaying(true);
+                        }}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        <div className="c-video-item__thumb-wrap">
+                          <img src={video.image} alt={video.alt} className="c-video__thumb" loading="lazy" />
+                          {!isSelected && (
+                            <button className="c-play-btn c-play-btn--small">
+                              <span className="c-play-btn__icon">▶</span>
+                            </button>
+                          )}
+                        </div>
+                        <div className="c-video-item__content">
+                          <h5 className="c-video-item__caption">{video.caption}</h5>
+                        </div>
                       </div>
-                      <div className="c-video-item__content">
-                        <h5 className="c-video-item__caption">{video.caption}</h5>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             </div>

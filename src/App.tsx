@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import config from './config.json';
 import { Menu, X } from 'lucide-react';
+import IcenSection from './IcenSection';
+import RoniSection from './RoniSection';
+
 
 const generateSlideshowImages = (region: 'peru' | 'hsur') => {
   const list = [];
@@ -252,6 +255,12 @@ export default function App() {
             </div>
           </div>
         </section>
+
+        {/* ICEN Section */}
+        <IcenSection />
+
+        {/* RONI Section */}
+        <RoniSection />
 
         {/* Monitoreo en Vivo Section */}
         <section id="monitoreo" className="o-section">

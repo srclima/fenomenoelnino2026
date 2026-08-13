@@ -141,17 +141,15 @@ export default function App() {
               </div>
             </div>
           </div>
-        </section>
 
-        {/* Auspicios Section */}
-        <section id="auspicios" className="c-sponsors o-section" style={{ padding: '3vh 0' }}>
-          <div className="o-container">
-            <div className="c-sponsors__inner js-reveal" style={{ '--reveal-delay': '0.4s' } as React.CSSProperties}>
-              <span className="c-sponsors__label">{config.sponsor.title}</span>
-              <img src={config.sponsor.img} alt="Grupo RPP" className="c-sponsors__logo" />
-            </div>
+          {/* Auspicios bar — bottom of hero */}
+          <div className="c-hero__sponsors js-reveal" style={{ '--reveal-delay': '0.5s' } as React.CSSProperties}>
+            <span className="c-hero__sponsors-label">{config.sponsor.title}</span>
+            <img src={config.sponsor.img} alt="Auspiciador" className="c-hero__sponsors-logo" />
           </div>
         </section>
+
+
 
         {/* Noticias Grid Section */}
         <section id="noticias" className="o-section">

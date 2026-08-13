@@ -38,12 +38,14 @@ function parseOniData(raw: string): RoniRecord[] {
     .filter(line => line.trim() && !line.startsWith('%') && !line.startsWith('SEAS'))
     .map(line => {
       const parts = line.trim().split(/\s+/);
-      if (parts.length < 4) return null;
+      if (parts.length < 3) return null;
+
+      const rawAnom = +parts[2];
+
       return {
         seas: parts[0],
         year: +parts[1],
-        total: +parts[2],
-        anom: +parts[3],
+        anom: isNaN(rawAnom) ? NaN : Math.round(rawAnom * 10) / 10,
       };
     })
     .filter((r): r is RoniRecord => r !== null && !isNaN(r.anom));
@@ -275,7 +277,7 @@ export default function RoniSection() {
 
   useEffect(() => {
     const PROXY = 'https://felicidad.com.pe/testdeafinidad/datos?url=';
-    const TARGET = encodeURIComponent('https://www.cpc.ncep.noaa.gov/data/indices/oni.ascii.txt');
+    const TARGET = encodeURIComponent('https://www.cpc.ncep.noaa.gov/data/indices/RONI.ascii.txt');
 
     fetch(`${PROXY}${TARGET}`)
       .then((res) => {

@@ -143,7 +143,7 @@ export default function App() {
           </div>
 
           {/* Auspicios bar — bottom of hero */}
-          <div className="c-hero__sponsors js-reveal" style={{ '--reveal-delay': '0.5s' } as React.CSSProperties}>
+          <div className="c-hero__sponsors">
             <span className="c-hero__sponsors-label">{config.sponsor.title}</span>
             <img src={config.sponsor.img} alt="Auspiciador" className="c-hero__sponsors-logo" />
           </div>

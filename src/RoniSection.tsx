@@ -238,36 +238,7 @@ const RoniGauge: React.FC<GaugeProps> = ({ latest, loading }) => {
   );
 };
 
-// ─── Sparkline (last 36 seasons) ─────────────────────────────────────────────
-const RoniSparkline: React.FC<{ data: RoniRecord[] }> = ({ data }) => {
-  // One record per season — take last 36 seasons
-  const last = data.slice(-36);
-  const maxAbs = 3;
-  const barW = 100 / last.length;
 
-  return (
-    <div className="c-icen-sparkline" aria-label="Historial RONI últimos 36 trimestres">
-      <svg viewBox="0 0 100 40" preserveAspectRatio="none" className="c-icen-sparkline-svg">
-        <line x1="0" y1="20" x2="100" y2="20" stroke="rgba(255,255,255,0.15)" strokeWidth="0.4" />
-        {last.map((rec, i) => {
-          const cat = getCategory(rec.anom);
-          const barH = Math.abs(rec.anom) / maxAbs * 18;
-          const x = i * barW;
-          const y = rec.anom >= 0 ? 20 - barH : 20;
-          return (
-            <rect key={i} x={x + 0.1} y={y} width={barW - 0.2} height={barH || 0.5} fill={cat.color} opacity={0.85}>
-              <title>{`${SEAS_LABEL[rec.seas] ?? rec.seas} ${rec.year}: ${rec.anom >= 0 ? '+' : ''}${rec.anom.toFixed(2)}°C`}</title>
-            </rect>
-          );
-        })}
-      </svg>
-      <div className="c-icen-sparkline__labels">
-        <span>{last[0] ? `${last[0].seas} ${last[0].year}` : ''}</span>
-        <span>{last[last.length - 1] ? `${last[last.length - 1].seas} ${last[last.length - 1].year}` : ''}</span>
-      </div>
-    </div>
-  );
-};
 
 // ─── Main Section ─────────────────────────────────────────────────────────────
 export default function RoniSection() {
@@ -314,7 +285,7 @@ export default function RoniSection() {
             relativo a la anomalía media del cinturón tropical (20°N–20°S).
             Se declara evento cuando el umbral ±0.5°C se mantiene 5 trimestres consecutivos.
             Fuente:{' '}
-            <a href="https://www.cpc.ncep.noaa.gov/data/indices/oni.ascii.txt" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-accent-cyan)' }}>
+            <a href="https://cpc.ncep.noaa.gov/products/analysis_monitoring/enso/roni/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-accent-cyan)' }}>
               NOAA / CPC
             </a>.
           </p>
@@ -388,12 +359,7 @@ export default function RoniSection() {
               </div>
             </div>
 
-            {data.length > 0 && (
-              <div className="c-icen-history">
-                <h4 className="c-icen-history__title">Historial últimos 36 trimestres</h4>
-                <RoniSparkline data={data} />
-              </div>
-            )}
+
           </div>
         </div>
       </div>

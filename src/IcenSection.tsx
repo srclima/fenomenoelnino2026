@@ -246,45 +246,6 @@ const IcenGauge: React.FC<GaugeProps> = ({ latest, loading }) => {
   );
 };
 
-// ─── Historical mini-chart (sparkline bar chart last 24 months) ──────────────
-const IcenSparkline: React.FC<{ data: IcenRecord[] }> = ({ data }) => {
-  const last = data.slice(-36);
-  const maxAbs = 4;
-  const barW = 100 / last.length;
-
-  return (
-    <div className="c-icen-sparkline" aria-label="Historial ICEN últimos 36 meses">
-      <svg viewBox="0 0 100 40" preserveAspectRatio="none" className="c-icen-sparkline-svg">
-        {/* Zero line */}
-        <line x1="0" y1="20" x2="100" y2="20" stroke="rgba(255,255,255,0.15)" strokeWidth="0.4" />
-
-        {last.map((rec, i) => {
-          const cat = getCategory(rec.value);
-          const barH = Math.abs(rec.value) / maxAbs * 18;
-          const x = i * barW;
-          const y = rec.value >= 0 ? 20 - barH : 20;
-          return (
-            <rect
-              key={i}
-              x={x + 0.1}
-              y={y}
-              width={barW - 0.2}
-              height={barH || 0.5}
-              fill={cat.color}
-              opacity={0.85}
-            >
-              <title>{`${MONTH_NAMES[rec.month - 1]} ${rec.year}: ${rec.value >= 0 ? '+' : ''}${rec.value.toFixed(2)}°C`}</title>
-            </rect>
-          );
-        })}
-      </svg>
-      <div className="c-icen-sparkline__labels">
-        <span>{last[0] ? `${MONTH_NAMES[last[0].month - 1]} ${last[0].year}` : ''}</span>
-        <span>{last[last.length - 1] ? `${MONTH_NAMES[last[last.length - 1].month - 1]} ${last[last.length - 1].year}` : ''}</span>
-      </div>
-    </div>
-  );
-};
 
 // ─── Main Section ─────────────────────────────────────────────────────────────
 export default function IcenSection() {
@@ -333,7 +294,7 @@ export default function IcenSection() {
           <p className="c-section-header__desc">
             Media corrida de 3 meses de las anomalías de TSM (ERSSTv5) en la región Niño 1+2.
             Climatologías calculadas cada 5 años (última: 1991–2020).
-            Fuente: <a href="http://met.igp.gob.pe/datos/ICEN.txt" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-accent-cyan)' }}>IGP / ENFEN</a>.
+            Fuente: <a href="http://met.igp.gob.pe/datos/lista_eventos_ICEN.html" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-accent-cyan)' }}>IGP / ENFEN</a>.
           </p>
         </header>
 
@@ -404,12 +365,7 @@ export default function IcenSection() {
               </div>
             </div>
 
-            {data.length > 0 && (
-              <div className="c-icen-history">
-                <h4 className="c-icen-history__title">Historial últimos 36 meses</h4>
-                <IcenSparkline data={data} />
-              </div>
-            )}
+
           </div>
         </div>
       </div>

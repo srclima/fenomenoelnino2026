@@ -13,15 +13,15 @@ const MONTH_NAMES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Se
 // ICEN classification thresholds (ENFEN 2024)
 const CATEGORIES = [
   // El Niño (positive) — left side
-  { label: 'Extraordinario', min: 3.0,  max: Infinity, color: '#cc0000', side: 'nino' },
-  { label: 'Fuerte',         min: 2.0,  max: 3.0,      color: '#ff2060', side: 'nino' },
-  { label: 'Moderado',       min: 1.0,  max: 2.0,      color: '#ff6080', side: 'nino' },
-  { label: 'Débil',          min: 0.4,  max: 1.0,      color: '#ffaabb', side: 'nino' },
-  { label: 'Neutro',         min: -0.4, max: 0.4,      color: '#aaaaaa', side: 'neutro' },
+  { label: 'Extraordinario', min: 3.5, max: Infinity, color: '#cc0000', side: 'nino' },
+  { label: 'Fuerte', min: 2.1, max: 3.5, color: '#ff2060', side: 'nino' },
+  { label: 'Moderado', min: 1.3, max: 2.1, color: '#ff6080', side: 'nino' },
+  { label: 'Débil', min: 0.5, max: 1.3, color: '#ffaabb', side: 'nino' },
+  { label: 'Neutro', min: -0.7, max: 0.5, color: '#aaaaaa', side: 'neutro' },
   // La Niña (negative) — right side
-  { label: 'Débil',          min: -1.0, max: -0.4,     color: '#aaddff', side: 'nina' },
-  { label: 'Moderada',       min: -2.0, max: -1.0,     color: '#2255ff', side: 'nina' },
-  { label: 'Fuerte',         min: -3.0, max: -2.0,     color: '#0011cc', side: 'nina' },
+  { label: 'Débil', min: -1.1, max: -0.7, color: '#aaddff', side: 'nina' },
+  { label: 'Moderada', min: -1.3, max: -1.1, color: '#2255ff', side: 'nina' },
+  { label: 'Fuerte', min: -Infinity, max: -1.3, color: '#0011cc', side: 'nina' },
 ];
 
 // ─── Data Parsing ─────────────────────────────────────────────────────────────
@@ -93,11 +93,11 @@ const IcenGauge: React.FC<GaugeProps> = ({ latest, loading }) => {
   // Gauge segments definition: [startVal, endVal, color, ninoLabel, ninaLabel]
   // We map value range [-4, 4] to angles [0°, 180°]
   const segments: Array<{ vMin: number; vMax: number; color: string }> = [
-    { vMin:  3.0, vMax:  4.0, color: '#cc0000' }, // El Niño Extraordinario
-    { vMin:  2.0, vMax:  3.0, color: '#ff2060' }, // El Niño Fuerte
-    { vMin:  1.0, vMax:  2.0, color: '#ff6080' }, // El Niño Moderado
-    { vMin:  0.4, vMax:  1.0, color: '#ffaabb' }, // El Niño Débil
-    { vMin: -0.4, vMax:  0.4, color: '#888888' }, // Neutro
+    { vMin: 3.0, vMax: 4.0, color: '#cc0000' }, // El Niño Extraordinario
+    { vMin: 2.0, vMax: 3.0, color: '#ff2060' }, // El Niño Fuerte
+    { vMin: 1.0, vMax: 2.0, color: '#ff6080' }, // El Niño Moderado
+    { vMin: 0.4, vMax: 1.0, color: '#ffaabb' }, // El Niño Débil
+    { vMin: -0.4, vMax: 0.4, color: '#888888' }, // Neutro
     { vMin: -1.0, vMax: -0.4, color: '#aaddff' }, // La Niña Débil
     { vMin: -2.0, vMax: -1.0, color: '#2255ff' }, // La Niña Moderada
     { vMin: -3.0, vMax: -2.0, color: '#0011cc' }, // La Niña Fuerte
@@ -121,11 +121,11 @@ const IcenGauge: React.FC<GaugeProps> = ({ latest, loading }) => {
   const labelRadius = R_OUTER + 32;
 
   const segLabels = [
-    { vMid:  3.5, text: 'Extraordinario' },
-    { vMid:  2.5, text: 'Fuerte' },
-    { vMid:  1.5, text: 'Moderado' },
-    { vMid:  0.7, text: 'Débil' },
-    { vMid:  0.0, text: 'Neutro' },
+    { vMid: 3.5, text: 'Extraordinario' },
+    { vMid: 2.5, text: 'Fuerte' },
+    { vMid: 1.5, text: 'Moderado' },
+    { vMid: 0.7, text: 'Débil' },
+    { vMid: 0.0, text: 'Neutro' },
     { vMid: -0.7, text: 'Débil' },
     { vMid: -1.5, text: 'Moderada' },
     { vMid: -2.5, text: 'Fuerte' },
@@ -141,7 +141,7 @@ const IcenGauge: React.FC<GaugeProps> = ({ latest, loading }) => {
         {/* Background ring segments */}
         {segments.map((seg, i) => {
           const aStart = valueToAngle(seg.vMax);
-          const aEnd   = valueToAngle(seg.vMin);
+          const aEnd = valueToAngle(seg.vMin);
           return (
             <path
               key={i}
@@ -296,30 +296,23 @@ export default function IcenSection() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const PROXY = 'https://api.allorigins.win/get?url=';
+    const PROXY = 'https://felicidad.com.pe/testdeafinidad/datos?url=';
     const TARGET = encodeURIComponent('http://met.igp.gob.pe/datos/ICEN.txt');
 
     fetch(`${PROXY}${TARGET}`)
-      .then(res => res.json())
-      .then(json => {
-        const records = parseIcenData(json.contents ?? '');
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP Error ${res.status}`);
+        return res.text();
+      })
+      .then(txt => {
+        const records = parseIcenData(txt);
         if (records.length === 0) throw new Error('Sin datos');
         setData(records);
         setLoading(false);
       })
       .catch(() => {
-        // Fallback: fetch directly (may fail due to CORS in some envs)
-        fetch('http://met.igp.gob.pe/datos/ICEN.txt')
-          .then(r => r.text())
-          .then(txt => {
-            const records = parseIcenData(txt);
-            setData(records);
-            setLoading(false);
-          })
-          .catch(() => {
-            setError('No se pudo cargar el ICEN. Verifica tu conexión.');
-            setLoading(false);
-          });
+        setError('No se pudo cargar el ICEN. Verifica tu conexión.');
+        setLoading(false);
       });
   }, []);
 
@@ -376,9 +369,9 @@ export default function IcenSection() {
                   <span className="c-icen-legend__heading" style={{ color: '#ff6080' }}>El Niño</span>
                   {[
                     { label: 'Extraordinario', color: '#cc0000', range: '≥ 3.0°C' },
-                    { label: 'Fuerte',         color: '#ff2060', range: '2.0 – 3.0°C' },
-                    { label: 'Moderado',        color: '#ff6080', range: '1.0 – 2.0°C' },
-                    { label: 'Débil',           color: '#ffaabb', range: '0.4 – 1.0°C' },
+                    { label: 'Fuerte', color: '#ff2060', range: '2.0 – 3.0°C' },
+                    { label: 'Moderado', color: '#ff6080', range: '1.0 – 2.0°C' },
+                    { label: 'Débil', color: '#ffaabb', range: '0.4 – 1.0°C' },
                   ].map(item => (
                     <div key={item.label} className="c-icen-legend__item">
                       <span className="c-icen-legend__swatch" style={{ background: item.color }} />
@@ -400,9 +393,9 @@ export default function IcenSection() {
                 <div className="c-icen-legend__group">
                   <span className="c-icen-legend__heading" style={{ color: '#2255ff' }}>La Niña</span>
                   {[
-                    { label: 'Débil',     color: '#aaddff', range: '-1.0 – -0.4°C' },
-                    { label: 'Moderada',  color: '#2255ff', range: '-2.0 – -1.0°C' },
-                    { label: 'Fuerte',    color: '#0011cc', range: '-3.0 – -2.0°C' },
+                    { label: 'Débil', color: '#aaddff', range: '-1.0 – -0.4°C' },
+                    { label: 'Moderada', color: '#2255ff', range: '-2.0 – -1.0°C' },
+                    { label: 'Fuerte', color: '#0011cc', range: '-3.0 – -2.0°C' },
                   ].map(item => (
                     <div key={item.label} className="c-icen-legend__item">
                       <span className="c-icen-legend__swatch" style={{ background: item.color }} />

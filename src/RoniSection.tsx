@@ -19,15 +19,15 @@ const SEAS_LABEL: Record<string, string> = {
 
 // RONI classification (same thresholds as ONI standard, ±0.5 / 1.0 / 1.5 / 2.0)
 const CATEGORIES = [
-  { label: 'Muy Fuerte',  min:  2.0,    max: Infinity, color: '#aa0000', side: 'nino' },
-  { label: 'Fuerte',      min:  1.5,    max: 2.0,      color: '#ff1a55', side: 'nino' },
-  { label: 'Moderado',    min:  1.0,    max: 1.5,      color: '#ff6688', side: 'nino' },
-  { label: 'Débil',       min:  0.5,    max: 1.0,      color: '#ffbbcc', side: 'nino' },
-  { label: 'Neutro',      min: -0.5,    max: 0.5,      color: '#888888', side: 'neutro' },
-  { label: 'Débil',       min: -1.0,    max: -0.5,     color: '#aaddff', side: 'nina' },
-  { label: 'Moderada',    min: -1.5,    max: -1.0,     color: '#2255ee', side: 'nina' },
-  { label: 'Fuerte',      min: -2.0,    max: -1.5,     color: '#0011cc', side: 'nina' },
-  { label: 'Muy Fuerte',  min: -Infinity, max: -2.0,   color: '#000077', side: 'nina' },
+  { label: 'Muy Fuerte', min: 2.0, max: Infinity, color: '#aa0000', side: 'nino' },
+  { label: 'Fuerte', min: 1.5, max: 2.0, color: '#ff1a55', side: 'nino' },
+  { label: 'Moderado', min: 1.0, max: 1.5, color: '#ff6688', side: 'nino' },
+  { label: 'Débil', min: 0.5, max: 1.0, color: '#ffbbcc', side: 'nino' },
+  { label: 'Neutro', min: -0.5, max: 0.5, color: '#888888', side: 'neutro' },
+  { label: 'Débil', min: -1.0, max: -0.5, color: '#aaddff', side: 'nina' },
+  { label: 'Moderada', min: -1.5, max: -1.0, color: '#2255ee', side: 'nina' },
+  { label: 'Fuerte', min: -2.0, max: -1.5, color: '#0011cc', side: 'nina' },
+  { label: 'Muy Fuerte', min: -Infinity, max: -2.0, color: '#000077', side: 'nina' },
 ];
 
 // ─── Data Parsing ─────────────────────────────────────────────────────────────
@@ -99,11 +99,11 @@ const RoniGauge: React.FC<GaugeProps> = ({ latest, loading }) => {
   const CX = 260, CY = 220, R_OUTER = 190, R_INNER = 125;
 
   const segments: Array<{ vMin: number; vMax: number; color: string }> = [
-    { vMin:  2.0, vMax:  3.0, color: '#aa0000' }, // Muy Fuerte El Niño
-    { vMin:  1.5, vMax:  2.0, color: '#ff1a55' }, // Fuerte El Niño
-    { vMin:  1.0, vMax:  1.5, color: '#ff6688' }, // Moderado El Niño
-    { vMin:  0.5, vMax:  1.0, color: '#ffbbcc' }, // Débil El Niño
-    { vMin: -0.5, vMax:  0.5, color: '#888888' }, // Neutro
+    { vMin: 2.0, vMax: 3.0, color: '#aa0000' }, // Muy Fuerte El Niño
+    { vMin: 1.5, vMax: 2.0, color: '#ff1a55' }, // Fuerte El Niño
+    { vMin: 1.0, vMax: 1.5, color: '#ff6688' }, // Moderado El Niño
+    { vMin: 0.5, vMax: 1.0, color: '#ffbbcc' }, // Débil El Niño
+    { vMin: -0.5, vMax: 0.5, color: '#888888' }, // Neutro
     { vMin: -1.0, vMax: -0.5, color: '#aaddff' }, // Débil La Niña
     { vMin: -1.5, vMax: -1.0, color: '#2255ee' }, // Moderada La Niña
     { vMin: -2.0, vMax: -1.5, color: '#0011cc' }, // Fuerte La Niña
@@ -125,11 +125,11 @@ const RoniGauge: React.FC<GaugeProps> = ({ latest, loading }) => {
   const labelRadius = R_OUTER + 32;
 
   const segLabels = [
-    { vMid:  2.5,  text: 'Muy Fuerte' },
-    { vMid:  1.75, text: 'Fuerte' },
-    { vMid:  1.25, text: 'Moderado' },
-    { vMid:  0.75, text: 'Débil' },
-    { vMid:  0.0,  text: 'Neutro' },
+    { vMid: 2.5, text: 'Muy Fuerte' },
+    { vMid: 1.75, text: 'Fuerte' },
+    { vMid: 1.25, text: 'Moderado' },
+    { vMid: 0.75, text: 'Débil' },
+    { vMid: 0.0, text: 'Neutro' },
     { vMid: -0.75, text: 'Débil' },
     { vMid: -1.25, text: 'Moderada' },
     { vMid: -1.75, text: 'Fuerte' },
@@ -145,7 +145,7 @@ const RoniGauge: React.FC<GaugeProps> = ({ latest, loading }) => {
         {/* Segments */}
         {segments.map((seg, i) => {
           const aStart = valueToAngle(seg.vMax);
-          const aEnd   = valueToAngle(seg.vMin);
+          const aEnd = valueToAngle(seg.vMin);
           return (
             <path
               key={i}
@@ -170,7 +170,7 @@ const RoniGauge: React.FC<GaugeProps> = ({ latest, loading }) => {
         {segLabels.map((lbl, i) => {
           const a = valueToAngle(lbl.vMid);
           const p = polarToCartesian(CX, CY, labelRadius, a);
-          const isLeft  = a < 220;
+          const isLeft = a < 220;
           const isRight = a > 320;
           return (
             <text
@@ -274,22 +274,22 @@ export default function RoniSection() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const PROXY = 'https://api.allorigins.win/get?url=';
+    const PROXY = 'https://felicidad.com.pe/testdeafinidad/datos?url=';
     const TARGET = encodeURIComponent('https://www.cpc.ncep.noaa.gov/data/indices/oni.ascii.txt');
 
     fetch(`${PROXY}${TARGET}`)
-      .then(res => res.json())
-      .then(json => {
-        const records = parseOniData(json.contents ?? '');
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP Error ${res.status}`);
+        return res.text();
+      })
+      .then(txt => {
+        const records = parseOniData(txt);
         if (records.length === 0) throw new Error('Sin datos');
         setData(records);
         setLoading(false);
       })
       .catch(() => {
-        fetch('https://www.cpc.ncep.noaa.gov/data/indices/oni.ascii.txt')
-          .then(r => r.text())
-          .then(txt => { setData(parseOniData(txt)); setLoading(false); })
-          .catch(() => { setError('No se pudo cargar el índice RONI/ONI.'); setLoading(false); });
+        setError('No se pudo cargar el índice RONI/ONI.'); setLoading(false);
       });
   }, []);
 
@@ -347,9 +347,9 @@ export default function RoniSection() {
                   <span className="c-icen-legend__heading" style={{ color: '#ff6688' }}>El Niño</span>
                   {[
                     { label: 'Muy Fuerte', color: '#aa0000', range: '≥ 2.0°C' },
-                    { label: 'Fuerte',     color: '#ff1a55', range: '1.5 – 2.0°C' },
-                    { label: 'Moderado',   color: '#ff6688', range: '1.0 – 1.5°C' },
-                    { label: 'Débil',      color: '#ffbbcc', range: '0.5 – 1.0°C' },
+                    { label: 'Fuerte', color: '#ff1a55', range: '1.5 – 2.0°C' },
+                    { label: 'Moderado', color: '#ff6688', range: '1.0 – 1.5°C' },
+                    { label: 'Débil', color: '#ffbbcc', range: '0.5 – 1.0°C' },
                   ].map(item => (
                     <div key={item.label} className="c-icen-legend__item">
                       <span className="c-icen-legend__swatch" style={{ background: item.color }} />
@@ -371,9 +371,9 @@ export default function RoniSection() {
                 <div className="c-icen-legend__group">
                   <span className="c-icen-legend__heading" style={{ color: '#2255ee' }}>La Niña</span>
                   {[
-                    { label: 'Débil',      color: '#aaddff', range: '-1.0 – -0.5°C' },
-                    { label: 'Moderada',   color: '#2255ee', range: '-1.5 – -1.0°C' },
-                    { label: 'Fuerte',     color: '#0011cc', range: '-2.0 – -1.5°C' },
+                    { label: 'Débil', color: '#aaddff', range: '-1.0 – -0.5°C' },
+                    { label: 'Moderada', color: '#2255ee', range: '-1.5 – -1.0°C' },
+                    { label: 'Fuerte', color: '#0011cc', range: '-2.0 – -1.5°C' },
                     { label: 'Muy Fuerte', color: '#000077', range: '≤ -2.0°C' },
                   ].map(item => (
                     <div key={item.label} className="c-icen-legend__item">

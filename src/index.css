@@ -140,14 +140,66 @@ button {
   color: var(--color-accent-cyan);
 }
 
+/* Mobile Menu Button */
+.c-menu-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text);
+  z-index: 101;
+  transition: color var(--transition-fast);
+}
+
+.c-menu-btn:hover {
+  color: var(--color-accent-cyan);
+}
+
+@media (min-width: 768px) {
+  .c-menu-btn {
+    display: none;
+  }
+}
+
+/* Navigation */
 .c-nav {
-  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(3, 3, 5, 0.98);
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-10px);
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+  z-index: 99;
+}
+
+.c-nav.is-open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
 }
 
 @media (min-width: 768px) {
   .c-nav {
-    display: flex;
+    position: static;
+    height: auto;
+    background: transparent;
+    backdrop-filter: none;
+    flex-direction: row;
     gap: 3rem;
+    opacity: 1;
+    pointer-events: auto;
+    transform: none;
+    transition: none;
+    z-index: auto;
   }
 }
 
@@ -233,6 +285,51 @@ button {
   color: var(--color-text-muted);
   max-width: 500px;
   margin-bottom: 3rem;
+}
+
+/* Sponsors */
+.c-sponsors {
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.c-sponsors__inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  opacity: 0.7;
+  transition: opacity var(--transition-fast);
+}
+
+.c-sponsors__inner:hover {
+  opacity: 1;
+}
+
+@media (min-width: 768px) {
+  .c-sponsors__inner {
+    flex-direction: row;
+    gap: 3rem;
+  }
+}
+
+.c-sponsors__label {
+  font-family: var(--font-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.c-sponsors__logo {
+  height: 35px;
+  filter: grayscale(100%) brightness(200%);
+  transition: filter var(--transition-fast);
+}
+
+.c-sponsors__inner:hover .c-sponsors__logo {
+  filter: grayscale(0%) brightness(100%);
 }
 
 /* Alert Widget */

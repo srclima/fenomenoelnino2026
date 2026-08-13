@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import config from './config.json';
+import { Menu, X } from 'lucide-react';
 
 const generateSlideshowImages = (region: 'peru' | 'hsur') => {
   const list = [];
@@ -28,6 +29,7 @@ export default function App() {
   const [activeVideo, setActiveVideo] = useState(config.videos.playlist[0]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const observerRef = useRef<IntersectionObserver | null>(null);
 
   const getYoutubeId = (url: string) => {
@@ -81,9 +83,23 @@ export default function App() {
         <a href={config.header.logo.link} className="c-logo" target="_blank">
           <img src={config.header.logo.src} alt={`${config.header.logo.main} ${config.header.logo.highlight}`} />
         </a>
-        <nav className="c-nav">
+
+        <button
+          className="c-menu-btn"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label="Alternar menú"
+        >
+          {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+        </button>
+
+        <nav className={`c-nav ${isMenuOpen ? 'is-open' : ''}`}>
           {config.header.navigation.map((item, idx) => (
-            <a key={idx} href={item.href} className="c-nav__link">
+            <a
+              key={idx}
+              href={item.href}
+              className="c-nav__link"
+              onClick={() => setIsMenuOpen(false)}
+            >
               {item.label}
             </a>
           ))}
@@ -120,6 +136,16 @@ export default function App() {
                 <div className="c-alert__dot"></div>
                 <span className="c-alert__text">{config.hero.alert.text}</span>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Auspicios Section */}
+        <section id="auspicios" className="c-sponsors o-section" style={{ padding: '3vh 0' }}>
+          <div className="o-container">
+            <div className="c-sponsors__inner js-reveal" style={{ '--reveal-delay': '0.4s' } as React.CSSProperties}>
+              <span className="c-sponsors__label">{config.sponsor.title}</span>
+              <img src={config.sponsor.img} alt="Grupo RPP" className="c-sponsors__logo" />
             </div>
           </div>
         </section>

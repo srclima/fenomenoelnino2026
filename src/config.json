@@ -2,7 +2,9 @@
   "header": {
     "logo": {
       "main": "El Niño",
-      "highlight": "2026"
+      "highlight": "2026",
+      "src": "https://s2.rpp-noticias.io/static/dist/img/icons/logo.svg",
+      "link": "https://rpp.pe"
     },
     "navigation": [
       {
@@ -10,16 +12,16 @@
         "href": "#inicio"
       },
       {
-        "label": "Monitoreo",
-        "href": "#monitoreo"
-      },
-      {
         "label": "Noticias",
         "href": "#noticias"
       },
       {
-        "label": "Prevención",
-        "href": "#prevencion"
+        "label": "Monitoreo",
+        "href": "#tsm"
+      },
+      {
+        "label": "Videos",
+        "href": "#videos"
       }
     ]
   },
@@ -148,6 +150,7 @@
   },
   "footer": {
     "campaignLabel": "ES UNA CAMPAÑA DE",
-    "logo": "RPP"
+    "src": "https://s2.rpp-noticias.io/static/dist/img/icons/logo.svg",
+    "link": "https://rpp.pe"
   }
 }

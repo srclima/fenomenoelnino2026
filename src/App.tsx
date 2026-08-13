@@ -78,9 +78,9 @@ export default function App() {
   return (
     <>
       <header className="c-header">
-        <div className="c-logo">
-          {config.header.logo.main} <span>{config.header.logo.highlight}</span>
-        </div>
+        <a href={config.header.logo.link} className="c-logo" target="_blank">
+          <img src={config.header.logo.src} alt={`${config.header.logo.main} ${config.header.logo.highlight}`} />
+        </a>
         <nav className="c-nav">
           {config.header.navigation.map((item, idx) => (
             <a key={idx} href={item.href} className="c-nav__link">
@@ -94,10 +94,10 @@ export default function App() {
         {/* Hero Section */}
         <section id="inicio" className="c-hero">
           <div className="c-hero__bg-wrap">
-            <img 
-              className="c-hero__bg" 
-              src={config.hero.backgroundImage} 
-              alt={config.hero.backgroundAlt} 
+            <img
+              className="c-hero__bg"
+              src={config.hero.backgroundImage}
+              alt={config.hero.backgroundAlt}
             />
           </div>
           <div className="o-container">
@@ -170,18 +170,18 @@ export default function App() {
                   {slideshowImagesPeru.map((slide, index) => {
                     const isActive = index === activeSlide;
                     return (
-                      <a 
+                      <a
                         key={index}
-                        href={slide.src} 
-                        target="_blank" 
+                        href={slide.src}
+                        target="_blank"
                         rel="noopener noreferrer"
                         className={`cycle-slide ${isActive ? 'cycle-slide-active' : ''}`}
                       >
-                        <img 
-                          src={slide.src} 
-                          title={slide.date} 
+                        <img
+                          src={slide.src}
+                          title={slide.date}
                           alt={`Anomalía TSM Perú ${slide.date}`}
-                          className="img-fluid" 
+                          className="img-fluid"
                         />
                       </a>
                     );
@@ -197,18 +197,18 @@ export default function App() {
                   {slideshowImagesHsur.map((slide, index) => {
                     const isActive = index === activeSlide;
                     return (
-                      <a 
+                      <a
                         key={index}
-                        href={slide.src} 
-                        target="_blank" 
+                        href={slide.src}
+                        target="_blank"
                         rel="noopener noreferrer"
                         className={`cycle-slide ${isActive ? 'cycle-slide-active' : ''}`}
                       >
-                        <img 
-                          src={slide.src} 
-                          title={slide.date} 
+                        <img
+                          src={slide.src}
+                          title={slide.date}
                           alt={`Anomalía TSM Hsur ${slide.date}`}
-                          className="img-fluid" 
+                          className="img-fluid"
                         />
                       </a>
                     );
@@ -229,11 +229,11 @@ export default function App() {
                 <span className="u-text-cyan">{config.monitoreo.title.highlight}</span>
               </h2>
             </header>
-            
+
             <div>
               <div className="c-tabs js-reveal" style={{ '--reveal-delay': '0.1s' } as React.CSSProperties}>
                 {config.monitoreo.tabs.map(tab => (
-                  <button 
+                  <button
                     key={tab.id}
                     className={`c-tabs__btn ${activeTab.id === tab.id ? 'is-active' : ''}`}
                     onClick={() => setActiveTab(tab)}
@@ -259,7 +259,7 @@ export default function App() {
                 <span className="u-text-cyan">{config.videos.title.highlight}</span>
               </h2>
             </header>
-            
+
             <div className="o-grid o-grid--video-layout">
               {/* Main Video */}
               <div className="c-video-main js-reveal" style={{ '--reveal-delay': '0.1s' } as React.CSSProperties}>
@@ -279,10 +279,10 @@ export default function App() {
                         <span className="c-play-btn__icon">▶</span>
                       </button>
                       <div className="c-video-main__actions">
-                        <a 
-                          href={activeVideo.src} 
-                          target="_blank" 
-                          rel="noopener noreferrer" 
+                        <a
+                          href={activeVideo.src}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="c-youtube-btn"
                         >
                           Mirar en <span>YouTube</span>
@@ -297,13 +297,13 @@ export default function App() {
               {/* Video Playlist */}
               <div className="c-video-playlist js-reveal" style={{ '--reveal-delay': '0.2s' } as React.CSSProperties}>
                 <h4 className="c-video-playlist__title">{config.videos.playlistTitle}</h4>
-                
+
                 <div className="c-video-list">
                   {config.videos.playlist.map((video) => {
                     const isSelected = activeVideo.id === video.id;
                     return (
-                      <div 
-                        key={video.id} 
+                      <div
+                        key={video.id}
                         className={`c-video-item ${isSelected ? 'is-active' : ''}`}
                         onClick={() => {
                           setActiveVideo(video);
@@ -347,7 +347,7 @@ export default function App() {
                   {config.prevencion.description}
                 </p>
               </div>
-              
+
               <ul className="c-prevention-list">
                 {config.prevencion.steps.map((item, index) => (
                   <li key={item.id} className="c-prevention-item js-reveal" style={{ '--reveal-delay': `${index * 0.15}s` } as React.CSSProperties}>
@@ -381,7 +381,9 @@ export default function App() {
           {config.footer.campaignLabel}
         </span>
         <div className="c-footer__logo js-reveal" style={{ '--reveal-delay': '0.15s' } as React.CSSProperties}>
-          {config.footer.logo}
+          <a href={config.footer.link} target="_blank">
+            <img src={config.footer.src} alt="RPP" />
+          </a>
         </div>
       </footer>
     </>

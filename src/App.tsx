@@ -179,6 +179,12 @@ export default function App() {
                 </div>
               ))}
             </div>
+
+            <div className="js-reveal" style={{ '--reveal-delay': '0.2s', marginTop: '2.5rem', display: 'flex', justifyContent: 'center' } as React.CSSProperties}>
+              <a href="https://rpp.pe/noticias/fenomeno-el-nino" target="_blank" rel="noopener noreferrer" className="c-cta__btn">
+                Ver más noticias
+              </a>
+            </div>
           </div>
         </section>
 

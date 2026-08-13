@@ -139,15 +139,15 @@ export default function App() {
               {config.noticias.news.map((news, index) => (
                 <div key={news.id} className="c-card js-reveal" style={{ '--reveal-delay': `${index * 0.15}s` } as React.CSSProperties}>
                   <div className="c-card__image-wrap">
-                    <img src={news.image} alt={news.title} className="c-card__image" loading="lazy" />
+                    <a href={news.link} target="_blank">
+                      <img src={news.image} alt={news.title} className="c-card__image" loading="lazy" />
+                    </a>
                   </div>
                   <div className="c-card__content">
-                    <h3 className="c-card__title">{news.title}</h3>
+                    <h3 className="c-card__title">
+                      <a href={news.link} target="_blank">{news.title}</a>
+                    </h3>
                     <p className="c-card__time">{news.time}</p>
-                    <a href={news.link} className="c-btn-read">
-                      <span className="c-btn-read__text">{config.noticias.readMoreText}</span>
-                      <span className="c-btn-read__icon">→</span>
-                    </a>
                   </div>
                 </div>
               ))}
@@ -159,8 +159,9 @@ export default function App() {
         <section id="tsm" className="o-section o-section--bordered-surface">
           <div className="o-container">
             <header className="c-section-header js-reveal" style={{ '--reveal-delay': '0s' } as React.CSSProperties}>
-              <span className="c-section-header__subtitle">Monitoreo diario</span>
-              <h2 className="c-section-header__title">El Niño Costero<span className="u-text-cyan">(Niño 1+2)</span></h2>
+              <span className="c-section-header__subtitle">{config.monitoreodiario.subtitle}</span>
+              <h2 className="c-section-header__title">{config.monitoreodiario.title_costero.text}<span className="u-text-cyan">{config.monitoreodiario.title_costero.highlight}</span></h2>
+              <p className="c-section-header__desc">{config.monitoreodiario.title_costero.description} Fuente: <a href={config.monitoreodiario.source_link} target="_blank" rel="noopener noreferrer">{config.monitoreodiario.source}</a></p>
             </header>
 
             <div className="c-slideshows-container js-reveal" style={{ '--reveal-delay': '0.1s' } as React.CSSProperties}>
@@ -188,32 +189,39 @@ export default function App() {
                   })}
                 </div>
               </div>
+            </div>
+          </div>
+        </section>
 
-              <h2 className="c-section-header__title u-text-left">El Niño en el Pacífico Central<span className="u-text-cyan">(Niño 3.4)</span></h2>
+        <section id="tsm_pacifico" className="o-section o-section--bordered-surface">
+          <div className="o-container">
+            <header className="c-section-header js-reveal" style={{ '--reveal-delay': '0s' } as React.CSSProperties}>
+              <h2 className="c-section-header__title">{config.monitoreodiario.title_pacifico.text}<span className="u-text-cyan">{config.monitoreodiario.title_pacifico.highlight}</span></h2>
+              <p className="c-section-header__desc">{config.monitoreodiario.title_pacifico.description} Fuente: <a href={config.monitoreodiario.source_link} target="_blank" rel="noopener noreferrer">{config.monitoreodiario.source}</a></p>
+            </header>
 
-              {/* Slideshow Hsur */}
-              <div className="c-slideshow-wrapper">
-                <div id="slideshow-hsur" className="cycle-slideshow">
-                  {slideshowImagesHsur.map((slide, index) => {
-                    const isActive = index === activeSlide;
-                    return (
-                      <a
-                        key={index}
-                        href={slide.src}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`cycle-slide ${isActive ? 'cycle-slide-active' : ''}`}
-                      >
-                        <img
-                          src={slide.src}
-                          title={slide.date}
-                          alt={`Anomalía TSM Hsur ${slide.date}`}
-                          className="img-fluid"
-                        />
-                      </a>
-                    );
-                  })}
-                </div>
+            {/* Slideshow Hsur */}
+            <div className="c-slideshow-wrapper">
+              <div id="slideshow-hsur" className="cycle-slideshow">
+                {slideshowImagesHsur.map((slide, index) => {
+                  const isActive = index === activeSlide;
+                  return (
+                    <a
+                      key={index}
+                      href={slide.src}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`cycle-slide ${isActive ? 'cycle-slide-active' : ''}`}
+                    >
+                      <img
+                        src={slide.src}
+                        title={slide.date}
+                        alt={`Anomalía TSM Hsur ${slide.date}`}
+                        className="img-fluid"
+                      />
+                    </a>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -296,7 +304,6 @@ export default function App() {
 
               {/* Video Playlist */}
               <div className="c-video-playlist js-reveal" style={{ '--reveal-delay': '0.2s' } as React.CSSProperties}>
-                <h4 className="c-video-playlist__title">{config.videos.playlistTitle}</h4>
 
                 <div className="c-video-list">
                   {config.videos.playlist.map((video) => {
@@ -369,7 +376,7 @@ export default function App() {
             <h2 className="c-cta__title js-reveal" style={{ '--reveal-delay': '0s' } as React.CSSProperties}>
               {config.cta.title}
             </h2>
-            <a href={config.cta.buttonLink} className="c-cta__btn js-reveal" style={{ '--reveal-delay': '0.15s' } as React.CSSProperties}>
+            <a href={config.cta.buttonLink} className="c-cta__btn js-reveal" target="_blank" rel="noopener noreferrer" style={{ '--reveal-delay': '0.15s' } as React.CSSProperties}>
               {config.cta.buttonText}
             </a>
           </div>

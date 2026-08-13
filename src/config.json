@@ -85,6 +85,21 @@
       }
     ]
   },
+  "monitoreodiario": {
+    "subtitle": "Monitoreo Diario",
+    "title_costero": {
+      "text": "El niño costero ",
+      "highlight": "(Niño 1+2)",
+      "description": "El mapa de anomalías de temperatura evidencia el calentamiento en la zona Niño 1+2. De acuerdo con el ENFEN, El Niño Costero se mantendrá activo hasta abril de 2027 con una probabilidad mayoritaria de alcanzar una magnitud fuerte, pudiendo registrar eventos de magnitud extraordinaria hacia el cierre del año 2026."
+    },
+    "title_pacifico": {
+      "text": "El niño en el pacífico central ",
+      "highlight": "(Niño 3.4)",
+      "description": "El mapa de temperatura del Pacífico ecuatorial muestra un calentamiento anómalo consolidado en la zona Niño 3.4. Según el ENFEN, El Niño en esta región se extendería hasta abril de 2027, proyectando alcanzar una magnitud muy fuerte entre noviembre y diciembre de 2026, y manteniendo una prevalencia de magnitud fuerte para el verano 2027."
+    },
+    "source": "SENAHI",
+    "source_link": "https://www.senamhi.gob.pe/?p=fenomeno-el-nino"
+  },
   "videos": {
     "subtitle": "Multimedia",
     "title": {
@@ -146,7 +161,7 @@
   "cta": {
     "title": "TODO LO QUE NECESITAS PARA PROTEGERTE A TI Y A TU FAMILIA",
     "buttonText": "CONOCE MÁS",
-    "buttonLink": "#"
+    "buttonLink": "https://rpp.pe/noticias/senamhi"
   },
   "footer": {
     "campaignLabel": "ES UNA CAMPAÑA DE",

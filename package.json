@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
-    "prerender": "node prerender.js"
+    "prerender": "vite build && node prerender.js"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
